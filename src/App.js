@@ -14,9 +14,9 @@ const App = ({ values, handleChange }) => (
 )
 
 const FormikApp = withFormik({
-  mapPropsToValues() {
+  mapPropsToValues({ email }) {
     return {
-      email: 'test email'
+      email: email || ''
     }
   }
 })(App)
