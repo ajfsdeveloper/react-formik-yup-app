@@ -2,7 +2,7 @@ import React from 'react'
 import { withFormik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 
-const App = ({ values, errors, touched }) => (
+const App = ({ values, errors, touched, isSubmitting }) => (
   <Form>
     <div>
       {touched.email && errors.email && <p>{errors.email}</p>}
@@ -20,7 +20,9 @@ const App = ({ values, errors, touched }) => (
       <option value="free">Free</option>
       <option value="premium">Premium</option>
     </Field>
-    <button type="submit">Submit</button>
+    <button disabled={isSubmitting} type="submit">
+      Submit
+    </button>
   </Form>
 )
 
@@ -41,7 +43,15 @@ const FormikApp = withFormik({
       .min(9, 'Password must be 9 characters or longer')
       .required('Password is required')
   }),
-  handleSubmit(values) {
+  handleSubmit(values, { resetForm, setErrors, setSubmitting }) {
+    setTimeout(() => {
+      if (values.email === 'test@test.com') {
+        setErrors({ email: 'That email is already taken' })
+      } else {
+        resetForm()
+      }
+      setSubmitting(false)
+    }, 2000)
     console.log(values)
   }
 })(App)
