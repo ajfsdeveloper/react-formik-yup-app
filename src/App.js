@@ -1,8 +1,8 @@
 import React from 'react'
 import { withFormik } from 'formik'
 
-const App = ({ values, handleChange }) => (
-  <div>
+const App = ({ values, handleChange, handleSubmit }) => (
+  <form onSubmit={handleSubmit}>
     <input
       type="email"
       name="email"
@@ -10,14 +10,26 @@ const App = ({ values, handleChange }) => (
       value={values.email}
       onChange={handleChange}
     />
-  </div>
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      value={values.password}
+      onChange={handleChange}
+    />
+    <button type="submit">Submit</button>
+  </form>
 )
 
 const FormikApp = withFormik({
-  mapPropsToValues({ email }) {
+  mapPropsToValues({ email, password }) {
     return {
-      email: email || ''
+      email: email || '',
+      password: password || ''
     }
+  },
+  handleSubmit(values) {
+    console.log(values)
   }
 })(App)
 
